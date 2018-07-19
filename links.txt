@@ -1,0 +1,20 @@
+Facebook bot
+
+Tutorial:
+https://cosmicjs.com/blog/how-to-build-a-facebook-bot-app-using-nodejs
+https://medium.com/crowdbotics/how-to-create-your-very-own-facebook-messenger-bot-with-dialogflow-and-node-js-in-just-one-day-f5f2f5792be5
+
+CosmicJS
+
+https://github.com/cosmicjs/cosmicjs-node
+https://www.npmjs.com/package/cosmicjs
+https://cosmicjs.com
+https://github.com/cosmicjs
+https://cosmicjs.com/knowledge-base/nodejs-cms
+
+Examples:
+https://hackernoon.com/build-and-deploy-a-serverless-node-js-app-powered-by-cosmic-js-21b45eaea32e
+
+Разные статьи
+
+https://www.one-tab.com/page/RRF2F0CnSgWHjdOciAxLHA
