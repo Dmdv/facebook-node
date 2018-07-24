@@ -3,6 +3,13 @@ Facebook bot
 Tutorial:
 https://cosmicjs.com/blog/how-to-build-a-facebook-bot-app-using-nodejs
 https://medium.com/crowdbotics/how-to-create-your-very-own-facebook-messenger-bot-with-dialogflow-and-node-js-in-just-one-day-f5f2f5792be5
+https://github.com/Charca/bootbot
+https://github.com/jw84/messenger-bot-tutorial
+https://www.sitepoint.com/building-facebook-chat-bot-node-heroku/
+https://girliemac.com/blog/2017/01/06/facebook-apiai-bot-nodejs/
+https://chatbotsmagazine.com/building-a-pok%C3%A9mon-messenger-chatbot-with-bootbot-in-less-than-15-minutes-d13a5755cd8
+https://github.com/Charca/pokenum
+
 
 CosmicJS
 
@@ -18,3 +25,4 @@ https://hackernoon.com/build-and-deploy-a-serverless-node-js-app-powered-by-cosm
 Разные статьи
 
 https://www.one-tab.com/page/RRF2F0CnSgWHjdOciAxLHA
+https://www.one-tab.com/page/YRz_3C4YQ7-8loVqnP7mbA
