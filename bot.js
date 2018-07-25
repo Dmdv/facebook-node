@@ -2,20 +2,20 @@
 
 const BootBot = require("bootbot");
 const config = require("config");
-const express = require('express')
-const bodyParser = require('body-parser')
-const request = require('request')
+const express = require('express');
+const bodyParser = require('body-parser');
+const request = require('request');
 //const app = express()
-const Cosmic = require('cosmicjs')
+const Cosmic = require('cosmicjs');
 //require('dotenv').config()
-const chrono = require('chrono-node')
-var schedule = require('node-schedule')
+const chrono = require('chrono-node');
+var schedule = require('node-schedule');
 
-const EventEmitter = require('events').EventEmitter
+const EventEmitter = require('events').EventEmitter;
 
-var config = {}
-const reminders = []
-const eventEmitter = new EventEmitter()
+var config = {};
+const reminders = [];
+const eventEmitter = new EventEmitter();
 
 console.log("Starting");
 
@@ -87,7 +87,7 @@ const bot = new BootBot({
     config.bucket = newConfigInfo
     convo.say('All set :)')
     convo.end();
-  }
+  };
   
   chat.conversation((convo) => {
       getBucketSlug(convo)

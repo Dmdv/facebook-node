@@ -2,6 +2,8 @@
 
 const BootBot = require("bootbot");
 const config = require("config");
+const format = require('string-format');
+const localtunnel = require('localtunnel');
 
 console.log("Starting");
 
@@ -18,11 +20,27 @@ const bot = new BootBot({
   bot.setGreetingText("Hello, I'm here to help you manage your tasks. Be sure to setup your bucket by typing 'Setup'. ");
   
   bot.on('message', (payload, chat) => {
-    console.log("Hi");
+    console.log("--- new message from chat ---");
+    console.log(format('Hello, {}!', 'Alice'));
     const text = payload.message.text;
-    chat.say('Echo: ${text}');
+    console.log(text);
+    chat.say(text);
   });
 
   console.log("Bot started");
   
-  bot.start();
+  bot.start(config.get('bot_port'));
+
+//   var tunnel = localtunnel(config.get('bot_port'), function(err, tunnel) {
+//     if (err) {
+//       console.warn("Failed to start localtunnel:");
+//       console.warn(err);
+//       return;
+//     }
+
+//     console.log(format('Localtunnel is started on: "{}"', tunnel.url));
+// });
+
+// tunnel.on('close', function() {
+//     console.warn("localtunnel is closed");
+// });
