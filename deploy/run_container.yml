@@ -1,0 +1,49 @@
+---
+- hosts: 127.0.0.1
+  gather_facts: yes
+  
+  remote_user: deployer
+  become: yes
+  become_method: sudo
+
+  tasks:
+
+  - name: Check if echo_backup exists
+    command: docker inspect --type container echo_backup
+    ignore_errors: yes
+    register: result
+
+  - name: Remove echo_backup container
+    docker_container:
+      name: echo_backup
+      state: absent
+    when: result is succeeded
+
+  - name: Rename echo to echo_backup
+    command: docker rename echo echo_backup
+    ignore_errors: yes
+  
+  - name: Stop echo_backup
+    docker_container:
+      name: echo_backup
+      state: stopped
+      stop_timeout: 10
+    ignore_errors: yes
+    when: result is succeeded
+
+  - name: Run echo container
+    docker_container:
+      name: echo
+      image: echo:latest
+      state: started
+      restart_policy: unless-stopped
+      detach: yes
+
+  # - fail:
+  #     msg: "The system may not be provisioned according to the CMDB status."
+  #   when: cmdb_status != "to-be-staged"
+
+  # - name: fail the play if the previous command did not succeed
+  #   fail:
+  #     msg: "the command failed"
+  #   when: "'FAILED' in command_result.stderr"

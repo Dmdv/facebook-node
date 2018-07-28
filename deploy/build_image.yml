@@ -1,0 +1,40 @@
+---
+- hosts: 127.0.0.1
+  gather_facts: yes
+  
+  remote_user: deployer
+  become: yes
+  become_method: sudo
+
+  tasks:
+
+  - name: Build the image with command
+    command: docker build -t echo:latest --pull ../.
+    register: console
+  - debug: var=console.stdout_lines
+  - name: Remove node:alpine
+    docker_image:
+      name: node:alpine
+      state: absent
+
+  # Remove with command
+
+  # - name: Remove node:alpine
+  #   command: docker rmi node:alpine -f
+  #   register: console
+  # - debug: var=console.stdout_lines
+
+  # Build with docker_image
+
+  # - name: Build image and with port
+  #   docker_image:
+  #     path: ../.
+  #     name: echo
+  #     tag: latest
+  #     #repository: localhost:5000/myimage333
+  #     #push: yes
+  #     pull: yes
+  #     buildargs:
+  #       listen_port: 8080
+
+  #- debug: var=ps.stdout_lines
