@@ -59,11 +59,43 @@ bot.setGreetingText("Hello, I'm here to help you manage your tasks. Be sure to s
 
 bot.setGetStartedButton((payload, chat) => {
 
-    chat.say(config.get('greeting'));
-    // payload.sender.id
-
-    console.warn(format("BotUserId = {}", payload.sender.id));
+  chat.say(config.get('greeting'));
+  
+  console.warn(format("BotUserId = {}", payload.sender.id));
 });
+
+// Persistent menu
+
+// Setting this to true would disable the text input on mobile
+// and the user will only be able to communicate via the persistent menu.
+const disableInput = true;
+
+bot.setPersistentMenu([{
+    title: 'My Account',
+    type: 'nested',
+    call_to_actions: [{
+        title: 'Pay Bill',
+        type: 'postback',
+        payload: 'PAYBILL_PAYLOAD'
+      },
+      {
+        title: 'History',
+        type: 'postback',
+        payload: 'HISTORY_PAYLOAD'
+      },
+      {
+        title: 'Contact Info',
+        type: 'postback',
+        payload: 'CONTACT_INFO_PAYLOAD'
+      }
+    ]
+  },
+  {
+    title: 'Go to Website',
+    type: 'web_url',
+    url: 'http://purple.com'
+  }
+], disableInput);
 
 // On receiving any message
 
@@ -88,7 +120,7 @@ bot.hear(['hello', 'hey', 'sup'], (payload, chat) => {
 bot.hear('create', (payload, chat) => {
 
   chat.conversation((convo) => {
-    
+
     convo.ask("What would you like your reminder to be? etc 'I have an appointment tomorrow from 10 to 11 AM' the information will be added automatically", (payload, convo) => { // 1
 
       try {
@@ -97,7 +129,7 @@ bot.hear('create', (payload, chat) => {
       } catch (error) {
         convo.say("Sorry, couldn't understand the data. Try again");
         convo.end();
-      } 
+      }
     })
   })
 });
@@ -106,15 +138,26 @@ bot.hear('create', (payload, chat) => {
 
 bot.hear(['help'], (payload, chat) => {
 
-	// Send a text message with buttons
-	chat.say({
-		text: 'What do you need help with?',
-		buttons: [
-			{ type: 'postback', title: 'Settings', payload: 'HELP_SETTINGS' },
-			{ type: 'postback', title: 'FAQ', payload: 'HELP_FAQ' },
-			{ type: 'postback', title: 'Talk to a human', payload: 'HELP_HUMAN' }
-		]
-	});
+  // Send a text message with buttons
+  chat.say({
+    text: 'What do you need help with?',
+    buttons: [{
+        type: 'postback',
+        title: 'Settings',
+        payload: 'HELP_SETTINGS'
+      },
+      {
+        type: 'postback',
+        title: 'FAQ',
+        payload: 'HELP_FAQ'
+      },
+      {
+        type: 'postback',
+        title: 'Talk to a human',
+        payload: 'HELP_HUMAN'
+      }
+    ]
+  });
 });
 
 // Help with message
@@ -129,19 +172,33 @@ bot.hear('help text', (payload, chat) => {
 // Message with quick replies
 
 bot.hear('colors', (payload, chat) => {
-    console.log("Got quick reply");
-    chat.say({
-        text: 'Favorite color?',
-        quickReplies: ['Red', 'Blue', 'Green']
-    });
+  console.log("Got quick reply");
+  chat.say({
+    text: 'Favorite color?',
+    quickReplies: ['Red', 'Blue', 'Green']
+  });
 });
 
 // Answering buttons
 
 bot.on('postback:HELP_SETTINGS', (payload, chat) => {
-    console.log('The Help Me button was clicked!');
-    chat.say("You clicked HELP_SETTINGS");
+  console.log('The Help Me button was clicked!');
+  chat.say("You clicked HELP_SETTINGS");
 });
+
+
+bot.on('postback:PAYBILL_PAYLOAD', (payload, chat) => {
+  chat.say(`Pay Bill here...`);
+});
+
+bot.on('postback:HISTORY_PAYLOAD', (payload, chat) => {
+  chat.say(`History here...`);
+});
+
+bot.on('postback:CONTACT_INFO_PAYLOAD', (payload, chat) => {
+  chat.say(`Contact info here...`);
+});
+
 
 console.log("Bot started");
 

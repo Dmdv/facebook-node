@@ -11,7 +11,7 @@ console.log("Access token: " + config.get('access_token'));
 console.log("Verify token: " + config.get('verify_token'));
 console.log("App secret: " + config.get('app_secret'));
 
-console.log(format("Running localtunnel on domain: '{}'", config.get('subdomain')))
+console.log(format("Running localtunnel on domain: '{}'", config.get('subdomain')));
 
 var tunnel = localtunnel(config.get('bot_port'), { subdomain : config.get('subdomain') }, function (err, tunnel) {
 
