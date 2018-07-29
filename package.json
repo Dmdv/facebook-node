@@ -5,7 +5,8 @@
   "main": "echo.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node echo.js"
+    "start": "node main.js",
+    "echo": "node echo.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   "dependencies": {
     "bootbot": "^1.0.16",
     "config": "^1.31.0",
+    "console-stamp": "^0.2.6",
     "localtunnel": "^1.9.0",
     "string-format": "^2.0.0"
   }
