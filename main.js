@@ -5,6 +5,8 @@ const config = require("config");
 const format = require('string-format');
 const localtunnel = require("localtunnel");
 const chrono = require('chrono-node');
+const express = require('express');
+const strings = require('./config/strings.json')
 
 // logging
 
@@ -53,14 +55,18 @@ const bot = new BootBot({
   appSecret: config.get('app_secret')
 });
 
+
+// Serve static files in images folder
+bot.app.use(express.static(config.get('public_folder')));
+
 // Приветствие и кнопка 'Начать'
 
-bot.setGreetingText("Hello, I'm here to help you manage your tasks. Be sure to setup your bucket by typing 'Setup'. ");
+bot.setGreetingText(strings.greetingText);
 
 bot.setGetStartedButton((payload, chat) => {
 
-  chat.say(config.get('greeting'));
-  
+  chat.say(strings.greetingMessage);
+
   console.warn(format("BotUserId = {}", payload.sender.id));
 });
 
@@ -71,22 +77,22 @@ bot.setGetStartedButton((payload, chat) => {
 const disableInput = true;
 
 bot.setPersistentMenu([{
-    title: 'My Account',
+    title: 'Валюта',
     type: 'nested',
     call_to_actions: [{
-        title: 'Pay Bill',
+        title: 'Курсы валют(кнопки)',
         type: 'postback',
-        payload: 'PAYBILL_PAYLOAD'
+        payload: 'CURRENCY_RATE'
       },
       {
-        title: 'History',
+        title: 'Оформить заказ (общий шаблон)',
         type: 'postback',
         payload: 'HISTORY_PAYLOAD'
       },
       {
-        title: 'Contact Info',
+        title: 'Пример списка',
         type: 'postback',
-        payload: 'CONTACT_INFO_PAYLOAD'
+        payload: 'LIST_EXAMPLE'
       }
     ]
   },
@@ -94,7 +100,17 @@ bot.setPersistentMenu([{
     title: 'Go to Website',
     type: 'web_url',
     url: 'http://purple.com'
-  }
+  },
+  {
+    title: 'О боте',
+    type: 'postback',
+    payload: 'CONTACT_INFO_PAYLOAD'
+  },
+  // {
+  //   title: 'Обратная связь',
+  //   type: 'postback',
+  //   payload: 'CONTACT_INFO_PAYLOAD'
+  // }
 ], disableInput);
 
 // On receiving any message
@@ -187,8 +203,98 @@ bot.on('postback:HELP_SETTINGS', (payload, chat) => {
 });
 
 
-bot.on('postback:PAYBILL_PAYLOAD', (payload, chat) => {
-  chat.say(`Pay Bill here...`);
+bot.on('postback:CURRENCY_RATE', (payload, chat) => {
+
+  console.debug(strings.selectCurrencyText);
+
+  // Send a text message with buttons
+  chat.say({
+    text: strings.selectCurrencyText,
+    buttons: [{
+        type: 'postback',
+        title: strings.usd,
+        payload: 'HELP_SETTINGS'
+      },
+      {
+        type: 'postback',
+        title: strings.eur,
+        payload: 'HELP_FAQ'
+      },
+      {
+        type: 'postback',
+        title: strings.gbp,
+        payload: 'HELP_HUMAN'
+      }
+    ]
+  });
+});
+
+bot.on('postback:LIST_EXAMPLE', (payload, chat) => {
+
+  chat.say(`List here...`);
+
+  chat.say({
+    elements: [{
+        title: 'USD',
+        image_url: config.get('global_url') + 'usd.jpeg',
+        "buttons": [{
+          "title": "Купить",
+          "type": "web_url",
+          "url": "https://www.ya.ru",
+          "messenger_extensions": false,
+          "webview_height_ratio": "tall"
+        }],
+        "default_action": {
+          "type": "web_url",
+          "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+          "messenger_extensions": false,
+          "webview_height_ratio": "tall"
+        }
+      },
+      {
+        title: 'EURO',
+        image_url: config.get('global_url') + 'euro.png',
+        "buttons": [{
+          "title": "Купить",
+          "type": "web_url",
+          "url": "https://www.ya.ru",
+          "messenger_extensions": false,
+          "webview_height_ratio": "tall"
+        }],
+        "default_action": {
+          "type": "web_url",
+          "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+          "messenger_extensions": false,
+          "webview_height_ratio": "tall"
+        }
+      },
+      {
+        title: 'GBP',
+        image_url: config.get('global_url') + 'GBP.png',
+        "buttons": [{
+          "title": "Купить",
+          "type": "web_url",
+          "url": "https://www.ya.ru",
+          "messenger_extensions": false,
+          "webview_height_ratio": "tall"
+        }],
+        "default_action": {
+          "type": "web_url",
+          "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+          "messenger_extensions": false,
+          "webview_height_ratio": "tall"
+        }
+      }
+    ],
+    buttons: [{
+      type: 'postback',
+      title: 'View More',
+      payload: 'VIEW_MORE'
+    }]
+  }, {
+    topElementStyle: "compact"
+  });
+
 });
 
 bot.on('postback:HISTORY_PAYLOAD', (payload, chat) => {
