@@ -1,4 +1,4 @@
-# Deployment
+# Manual Deployment in chat
 
 Ansible deployment must reproduce the same scenario as described in deployment log
 
