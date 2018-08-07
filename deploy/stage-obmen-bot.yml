@@ -1,0 +1,34 @@
+- hosts: rumskapt202.open.ru
+  remote_user: deployer
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: Copy main.js
+    copy:
+      src: ../main.js
+      dest: /var/www/obmen-bot
+
+  - name: Copy package.json
+    copy:
+      src: ../package.json
+      dest: /var/www/obmen-bot
+
+  - name: Copy package-lock.json
+    copy:
+      src: ../package-lock.json
+      dest: /var/www/obmen-bot
+
+  - name: Copy modules
+    copy:
+      src: ../modules
+      dest: /var/www/obmen-bot
+
+  - name: Copy config
+    copy:
+      src: ../config
+      dest: /var/www/obmen-bot
+
+#  - name: Install dependencies
+#    command: npm install
+

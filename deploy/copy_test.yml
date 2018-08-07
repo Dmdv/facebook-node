@@ -1,0 +1,10 @@
+- hosts: rumskapt202.open.ru
+
+  remote_user: deployer
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: Ansible copy file force
+    copy:
+      src: ~/Develop/permutations.py
+      dest: /etc/cert/permutations.py

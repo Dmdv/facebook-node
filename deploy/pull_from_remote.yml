@@ -1,0 +1,16 @@
+- hosts: rumskapt202.open.ru
+  tasks:
+    - name: Define your private or public registry
+      docker_login:
+        registry: macbookpro02.open.ru
+        #username: vivekyad4v
+        #password: SECRET
+        #email: vivekyad**@gmail.com
+        #reauth: yes
+    - name: pull an image
+      docker_image:
+        name: localhost:5000/redshift_django
+#    - name: Create a data container
+#      docker_container:
+#        name: vivekyad4v
+#        image: vivekyad4v/local-simple-python

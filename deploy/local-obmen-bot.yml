@@ -1,0 +1,70 @@
+- hosts: localhost
+  remote_user: deployer
+  become: yes
+  become_method: sudo
+  vars:
+    destination: /var/www/obmen-bot
+    node_modules_pack: facebook-node-1.0.0.tgz
+    bot_name: obmen-bot
+
+  tasks:
+
+  - name: Stop process
+    command: pm2 stop {{ bot_name }}
+    ignore_errors: yes
+
+  - name: Delete process
+    command: pm2 delete {{ bot_name }}
+    ignore_errors: yes
+
+  - name: Delete /var/www/obmen-bot/
+    file:
+      path: "{{ destination }}"
+      state: absent
+
+  - name: Create /var/www/obmen-bot/
+    file:
+      path: "{{ destination }}"
+      mode: 0755
+      state: directory
+
+  - name: Pack dependencies
+    command: npm pack
+    args:
+      chdir: ..
+
+  - name: Copy dependencies
+    copy:
+      src: "../{{ node_modules_pack }}"
+      dest: "{{ destination }}/"
+
+  - name: Unpack dependencies
+    command: npm install {{ node_modules_pack }}
+    args:
+      chdir: "{{ destination }}"
+
+  - name: Copy main.js
+    copy:
+      src: ../main.js
+      dest: "{{ destination }}/"
+
+  - name: Copy package.json
+    copy:
+      src: ../package.json
+      dest: "{{ destination }}/"
+
+  - name: Copy modules
+    copy:
+      src: ../modules
+      dest: "{{ destination }}/"
+
+  - name: Copy config
+    copy:
+      src: ../config
+      dest: "{{ destination }}/"
+
+  - name: Start
+    command: pm2 --name {{ bot_name }} start npm -- start
+    ignore_errors: yes
+    args:
+      chdir: "{{ destination }}"
