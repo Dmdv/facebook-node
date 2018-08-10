@@ -7,6 +7,7 @@ const express = require('express');
 const menuModule = require('./modules/main_menu');
 const greetingModule = require('./modules/greeting');
 const tunnelModule = require('./modules/tunnel');
+const debugModule = require('./modules/debug');
 
 // logging
 
@@ -35,9 +36,16 @@ const bot = new BootBot({
 // Serve static files in images folder
 bot.app.use(express.static(config.get('public_folder')));
 
-bot.module(greetingModule);
-bot.module(menuModule);
-bot.module(tunnelModule);
+// Load modules
+{
+    bot.module(greetingModule);
+    bot.module(menuModule);
+    if (config.get('debug') === true) {
+        bot.module(debugModule);
+    }
+
+    bot.module(tunnelModule);
+}
 
 console.log("Bot started");
 

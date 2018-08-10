@@ -11,28 +11,23 @@ module.exports = (bot) => {
     // and the user will only be able to communicate via the persistent menu.
     const disableInput = true;
 
+    // Главное меню
+
     bot.setPersistentMenu([{
-            title: 'Валюта',
-            type: 'nested',
-            call_to_actions: [{
-                    title: 'Курсы валют(кнопки)',
-                    type: 'postback',
-                    payload: 'CURRENCY_RATE'
-                },
-                {
-                    title: 'Список валюты (список)',
-                    type: 'postback',
-                    payload: 'CURRENCY_LIST'
-                },
-                {
-                    title: 'Оформить заказ (общий шаблон)',
-                    type: 'postback',
-                    payload: 'ORDER'
-                }
-            ]
+            title: 'Купить',
+            type: 'postback',
+            payload: 'SELECT_CURRENCY'
+
+            // Это вложенное меню для примера: убрать payload, type = 'nested' и раскомментировать
+            // call_to_actions: [{
+            //         title: 'Выберите валюту',
+            //         type: 'postback',
+            //         payload: 'SELECT_CURRENCY'
+            //     }
+            // ]
         },
         {
-            title: 'Go to Website',
+            title: 'Перейти на сайт',
             type: 'web_url',
             url: 'http://open.ru'
         },
@@ -41,91 +36,16 @@ module.exports = (bot) => {
             type: 'postback',
             payload: 'ABOUT_BOT'
         },
-        // {
-        //   title: 'Обратная связь',
-        //   type: 'postback',
-        //   payload: 'ABOUT_BOT'
-        // }
+
     ], disableInput);
 
-
-    bot.on('postback:CURRENCY_LIST', (payload, chat) => {
-
-        chat.say(`List here...`);
-
-        chat.say({
-            elements: [{
-                    title: 'USD',
-                    image_url: config.get('global_url') + 'usd.jpeg',
-                    "buttons": [{
-                        "title": "Купить",
-                        "type": "web_url",
-                        "url": "https://www.ya.ru",
-                        "messenger_extensions": false,
-                        "webview_height_ratio": "tall"
-                    }],
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
-                        "messenger_extensions": false,
-                        "webview_height_ratio": "tall"
-                    }
-                },
-                {
-                    title: 'EURO',
-                    image_url: config.get('global_url') + 'euro.png',
-                    "buttons": [{
-                        "title": "Купить",
-                        "type": "web_url",
-                        "url": "https://www.ya.ru",
-                        "messenger_extensions": false,
-                        "webview_height_ratio": "tall"
-                    }],
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
-                        "messenger_extensions": false,
-                        "webview_height_ratio": "tall"
-                    }
-                },
-                {
-                    title: 'GBP',
-                    image_url: config.get('global_url') + 'GBP.png',
-                    "buttons": [{
-                        "title": "Купить",
-                        "type": "web_url",
-                        "url": "https://www.ya.ru",
-                        "messenger_extensions": false,
-                        "webview_height_ratio": "tall"
-                    }],
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
-                        "messenger_extensions": false,
-                        "webview_height_ratio": "tall"
-                    }
-                }
-            ],
-            buttons: [{
-                type: 'postback',
-                title: 'View More',
-                payload: 'VIEW_MORE'
-            }]
-        }, {
-            topElementStyle: "compact"
-        });
-
-    });
-
-    bot.on('postback:ORDER', (payload, chat) => {
-        chat.say(`Create order...`);
-    });
+    // Обработчики меню
 
     bot.on('postback:ABOUT_BOT', (payload, chat) => {
         chat.say(`Contact info here...`);
     });
 
-    bot.on('postback:CURRENCY_RATE', (payload, chat) => {
+    bot.on('postback:SELECT_CURRENCY', (payload, chat) => {
 
         console.debug(strings.selectCurrencyText);
 
@@ -150,4 +70,73 @@ module.exports = (bot) => {
             ]
         });
     });
+
+    // Пример создания списка
+    // bot.on('postback:CURRENCY_LIST', (payload, chat) => {
+
+    //     chat.say(`List here...`);
+
+    //     chat.say({
+    //         elements: [{
+    //                 title: 'USD',
+    //                 image_url: config.get('global_url') + 'usd.jpeg',
+    //                 "buttons": [{
+    //                     "title": "Купить",
+    //                     "type": "web_url",
+    //                     "url": "https://www.ya.ru",
+    //                     "messenger_extensions": false,
+    //                     "webview_height_ratio": "tall"
+    //                 }],
+    //                 "default_action": {
+    //                     "type": "web_url",
+    //                     "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+    //                     "messenger_extensions": false,
+    //                     "webview_height_ratio": "tall"
+    //                 }
+    //             },
+    //             {
+    //                 title: 'EURO',
+    //                 image_url: config.get('global_url') + 'euro.png',
+    //                 "buttons": [{
+    //                     "title": "Купить",
+    //                     "type": "web_url",
+    //                     "url": "https://www.ya.ru",
+    //                     "messenger_extensions": false,
+    //                     "webview_height_ratio": "tall"
+    //                 }],
+    //                 "default_action": {
+    //                     "type": "web_url",
+    //                     "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+    //                     "messenger_extensions": false,
+    //                     "webview_height_ratio": "tall"
+    //                 }
+    //             },
+    //             {
+    //                 title: 'GBP',
+    //                 image_url: config.get('global_url') + 'GBP.png',
+    //                 "buttons": [{
+    //                     "title": "Купить",
+    //                     "type": "web_url",
+    //                     "url": "https://www.ya.ru",
+    //                     "messenger_extensions": false,
+    //                     "webview_height_ratio": "tall"
+    //                 }],
+    //                 "default_action": {
+    //                     "type": "web_url",
+    //                     "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+    //                     "messenger_extensions": false,
+    //                     "webview_height_ratio": "tall"
+    //                 }
+    //             }
+    //         ],
+    //         buttons: [{
+    //             type: 'postback',
+    //             title: 'View More',
+    //             payload: 'VIEW_MORE'
+    //         }]
+    //     }, {
+    //         topElementStyle: "compact"
+    //     });
+
+    // });
 };
