@@ -3,6 +3,9 @@
 const config = require("config");
 const strings = require('../config/strings.json');
 
+const format = require('string-format');
+const rates = require('./rates');
+
 module.exports = (bot) => {
 
     // Persistent menu
@@ -49,26 +52,33 @@ module.exports = (bot) => {
 
         console.debug(strings.selectCurrencyText);
 
-        // Send a text message with buttons
-        chat.say({
-            text: strings.selectCurrencyText,
-            buttons: [{
-                    type: 'postback',
-                    title: strings.usd,
-                    payload: 'BUY_USD'
-                },
-                {
-                    type: 'postback',
-                    title: strings.eur,
-                    payload: 'BUY_EUR'
-                },
-                {
-                    type: 'postback',
-                    title: strings.gbp,
-                    payload: 'BUY_GPB'
-                }
-            ]
+        rates.getRates().then(rates => {
+
+            chat.say(rates);
+
+            // Send a text message with buttons
+            chat.say({
+                text: strings.selectCurrencyText,
+                buttons: [{
+                        type: 'postback',
+                        title: strings.usd,
+                        payload: 'BUY_USD'
+                    },
+                    {
+                        type: 'postback',
+                        title: strings.eur,
+                        payload: 'BUY_EUR'
+                    },
+                    {
+                        type: 'postback',
+                        title: strings.gbp,
+                        payload: 'BUY_GPB'
+                    }
+                ]
+            });
+
         });
+
     });
 
     // Пример создания списка

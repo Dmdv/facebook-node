@@ -8,6 +8,11 @@ const menuModule = require('./modules/main_menu');
 const greetingModule = require('./modules/greeting');
 const tunnelModule = require('./modules/tunnel');
 const debugModule = require('./modules/debug');
+const conversationModule = require('./modules/conversation');
+
+if (config.get('debug') === true) {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
 
 // logging
 
@@ -40,11 +45,13 @@ bot.app.use(express.static(config.get('public_folder')));
 {
     bot.module(greetingModule);
     bot.module(menuModule);
+
     if (config.get('debug') === true) {
         bot.module(debugModule);
     }
 
     bot.module(tunnelModule);
+    bot.module(conversationModule);
 }
 
 console.log("Bot started");
