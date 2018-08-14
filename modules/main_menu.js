@@ -62,17 +62,17 @@ module.exports = (bot) => {
                 buttons: [{
                         type: 'postback',
                         title: strings.usd,
-                        payload: 'BUY_USD'
+                        payload: 'USD'
                     },
                     {
                         type: 'postback',
                         title: strings.eur,
-                        payload: 'BUY_EUR'
+                        payload: 'EUR'
                     },
                     {
                         type: 'postback',
                         title: strings.gbp,
-                        payload: 'BUY_GPB'
+                        payload: 'GPB'
                     }
                 ]
             });

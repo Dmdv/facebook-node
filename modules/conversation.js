@@ -5,19 +5,49 @@ const format = require('string-format');
 
 module.exports = (bot) => {
 
-    // const buy = (convo) = {
-    
-    // };
+    const startTrading = (chat, currency) => {
 
-    bot.on('postback:BUY_USD', (payload, chat) => {
-        chat.say(`USD...`);
+        const askOperation = (convo) => {
+
+            const callbacks = [
+                {
+                    pattern: ['black', 'white'],
+                    callback: () => { /* User said "black" or "white" */ }
+                }
+            ];
+
+            const options = {
+                typing: true
+            };
+
+            convo.ask(`Выберите тип операции`, (payload, convo) => {
+
+                const text = payload.message.text;
+                convo.set('operation', text);
+
+                convo.say(`Тип операции: ${text}`);
+
+                console.log('User selected: ' + `${text}`);
+
+            }, callbacks, options);
+        };
+
+        chat.say('User selected: ' + currency);
+
+        chat.conversation((convo) => {
+            askOperation(convo);
+        });
+    };
+
+    bot.on('postback:USD', (payload, chat) => {
+        startTrading(chat, 'USD');
     });
 
-    bot.on('postback:BUY_EUR', (payload, chat) => {
-        chat.say(`EUR...`);
+    bot.on('postback:EUR', (payload, chat) => {
+        startTrading(chat, 'EUR');
     });
 
-    bot.on('postback:BUY_GPB', (payload, chat) => {
-        chat.say(`GPB...`);
+    bot.on('postback:GPB', (payload, chat) => {
+        startTrading(chat, 'GPB');
     });
 };
