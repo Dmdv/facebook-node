@@ -9,27 +9,46 @@ module.exports = (bot) => {
 
         const askOperation = (convo) => {
 
-            const callbacks = [
-                {
-                    pattern: ['black', 'white'],
-                    callback: () => { /* User said "black" or "white" */ }
-                }
-            ];
+            // const callbacks = [
+            //     {
+            //         pattern: ['black', 'white'],
+            //         callback: () => { /* User said "black" or "white" */ }
+            //     }
+            // ];
 
             const options = {
                 typing: true
             };
 
-            convo.ask(`Выберите тип операции`, (payload, convo) => {
+            convo.ask({
+                text: `Выберите тип операции`,
+                buttons: [{
+                        type: 'postback',
+                        title: 'Купить',
+                        payload: 'BUY'
+                    },
+                    {
+                        type: 'postback',
+                        title: 'Продать',
+                        payload: 'SELL'
+                    },
+                    {
+                        type: 'postback',
+                        title: 'Отменить',
+                        payload: 'CANCEL'
+                    }
+                ]
+            },(payload, convo) => {
 
                 const text = payload.message.text;
+
                 convo.set('operation', text);
 
                 convo.say(`Тип операции: ${text}`);
 
                 console.log('User selected: ' + `${text}`);
 
-            }, callbacks, options);
+            }, /*callbacks, */ options);
         };
 
         chat.say('User selected: ' + currency);
