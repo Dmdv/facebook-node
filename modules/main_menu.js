@@ -12,7 +12,7 @@ module.exports = (bot) => {
 
     // Setting this to true would disable the text input on mobile
     // and the user will only be able to communicate via the persistent menu.
-    const disableInput = true;
+    const disableInput = false;
 
     // Главное меню
 

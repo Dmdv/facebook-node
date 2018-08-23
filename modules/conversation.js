@@ -7,12 +7,34 @@ module.exports = (bot) => {
 
     const startTrading = (chat, currency) => {
 
+        const askSum = (convo) => {
+
+            convo.ask(`Введите сумму`, (payload, convo) => {
+                const sum = payload.message.text;
+                const operation = strings.operations[convo.get('operation').toLowerCase()]
+                const currency = convo.get('currency').toLowerCase();
+
+                convo.set('sum', sum);
+                convo.say(`Вы хотите ${operation} ${sum} ${currency}`).then(() => showSettings(convo));
+            });
+
+        };
+
+        const showSettings = (convo) => {
+            convo.say("Показать настройки").then(() => convo.end());
+        };
+
         const askOperation = (convo) => {
 
+            // Пример использования callback
             // const callbacks = [
             //     {
-            //         pattern: ['black', 'white'],
-            //         callback: () => { /* User said "black" or "white" */ }
+            //         event: 'postback',
+            //         callback: () => { 
+            //             /* User said "black" or "white" */ 
+            //             convo.say('fjhlkgklfdsgjfdk;j');
+            //             console.log('fjhlkgklfdsgjfdk');
+            //         }
             //     }
             // ];
 
@@ -21,34 +43,38 @@ module.exports = (bot) => {
             };
 
             convo.ask({
-                text: `Выберите тип операции`,
-                buttons: [{
-                        type: 'postback',
-                        title: 'Купить',
-                        payload: 'BUY'
-                    },
-                    {
-                        type: 'postback',
-                        title: 'Продать',
-                        payload: 'SELL'
-                    },
-                    {
-                        type: 'postback',
-                        title: 'Отменить',
-                        payload: 'CANCEL'
+                    text: `Выберите тип операции`,
+                    buttons: [{
+                            type: 'postback',
+                            title: 'Купить',
+                            payload: 'BUY'
+                        },
+                        {
+                            type: 'postback',
+                            title: 'Продать',
+                            payload: 'SELL'
+                        },
+                        {
+                            type: 'postback',
+                            title: 'Отмена операции',
+                            payload: 'CANCEL'
+                        }
+                    ]
+                },
+                (payload, convo) => {
+
+                    // Установить контекст
+                    convo.set('operation', payload.postback.payload);
+                    convo.set('currency',  currency);
+
+                    if (payload.postback.payload === 'CANCEL') {
+                        convo.say(strings.cancelText).then(() => convo.end());
+                        return;
                     }
-                ]
-            },(payload, convo) => {
 
-                const text = payload.message.text;
+                    askSum(convo);
 
-                convo.set('operation', text);
-
-                convo.say(`Тип операции: ${text}`);
-
-                console.log('User selected: ' + `${text}`);
-
-            }, /*callbacks, */ options);
+                } /*, callbacks*/ , options);
         };
 
         chat.say('User selected: ' + currency);
