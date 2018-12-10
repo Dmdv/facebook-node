@@ -3,8 +3,8 @@
 
 Пример формата:
 
-[rumskapt202.open.ru]
-10.48.114.30:22222  ansible_user=deployer
+[example.ru]
+your_ip:55555  ansible_user=deployer
 
 [dev]
-localhost ansible_user=dmitrijdackov
+localhost ansible_user=yourname
