@@ -1,4 +1,4 @@
-- hosts: rumskapt202.open.ru
+- hosts: example.ru
 
   remote_user: deployer
   become: yes
